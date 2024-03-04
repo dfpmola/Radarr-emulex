@@ -1164,7 +1164,7 @@ stages:
           then
             git commit -am 'Automated API Docs update'
             git push -f --set-upstream origin api-docs
-            curl -X POST -H "Authorization: token ${GITHUBTOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/radarr/radarr/pulls -d '{"head":"api-docs","base":"develop","title":"Update API docs"}'
+            curl -X POST -H "Authorization: token ${GITHUBTOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/dfpmola/Radarr-emulex/pulls -d '{"head":"api-docs","base":"develop","title":"Update API docs"}'
           else
             echo "No changes since last run"
           fi
@@ -1247,26 +1247,3 @@ stages:
     - Integration
     - Automation
     condition: eq(variables['system.pullrequest.isfork'], false)
-    displayName: Build Status Report
-    jobs:
-    - job:
-      displayName: Discord Notification
-      pool:
-        vmImage: ${{ variables.linuxImage }}
-      steps:
-        - task: DownloadPipelineArtifact@2
-          continueOnError: true
-          displayName: Download Screenshot Artifact
-          inputs:
-            buildType: 'current'
-            artifactName: 'WindowsAutomationScreenshots'
-            targetPath: $(Build.SourcesDirectory)
-        - checkout: none
-        - pwsh: |
-            iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Servarr/AzureDiscordNotify/master/DiscordNotify.ps1'))
-          env:
-            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-            DISCORDCHANNELID: $(discordChannelId)
-            DISCORDWEBHOOKKEY: $(discordWebhookKey)
-            DISCORDTHREADID: $(discordThreadId)
-
