@@ -1204,11 +1204,3 @@ stages:
           summaryFileLocation: './CoverageResults/combined/Cobertura.xml'
           reportDirectory: './CoverageResults/combined/'
 
-  - stage: Report_Out
-    dependsOn:
-    - Analyze
-    - Installer
-    - Unit_Test
-    - Integration
-    - Automation
-    condition: eq(variables['system.pullrequest.isfork'], false)
