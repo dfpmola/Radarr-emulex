@@ -435,11 +435,6 @@ stages:
             testName: 'linux-x64'
             poolName: 'Azure Pipelines'
             imageName: ${{ variables.linuxImage }}
-          FreebsdCore:
-            osName: 'Linux'
-            testName: 'freebsd-x64'
-            poolName: 'FreeBSD'
-            imageName:
 
       pool:
         name: $(poolName)
