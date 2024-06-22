@@ -3,6 +3,7 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -32,7 +33,7 @@ namespace Radarr.Api.V3
             _bulkResourceMapper = bulkResourceMapper;
 
             SharedValidator.RuleFor(c => c.Name).NotEmpty();
-            SharedValidator.RuleFor(c => c.Name).Must((v, c) => !_providerFactory.All().Any(p => p.Name == c && p.Id != v.Id)).WithMessage("Should be unique");
+            SharedValidator.RuleFor(c => c.Name).Must((v, c) => !_providerFactory.All().Any(p => p.Name.EqualsIgnoreCase(c) && p.Id != v.Id)).WithMessage("Should be unique");
             SharedValidator.RuleFor(c => c.Implementation).NotEmpty();
             SharedValidator.RuleFor(c => c.ConfigContract).NotEmpty();
 
@@ -48,6 +49,7 @@ namespace Radarr.Api.V3
         }
 
         [HttpGet]
+        [Produces("application/json")]
         public List<TProviderResource> GetAll()
         {
             var providerDefinitions = _providerFactory.All();
@@ -89,10 +91,8 @@ namespace Radarr.Api.V3
             var existingDefinition = _providerFactory.Find(providerResource.Id);
             var providerDefinition = GetDefinition(providerResource, existingDefinition, true, !forceSave, false);
 
-            // Comparing via JSON string to eliminate the need for every provider implementation to implement equality checks.
             // Compare settings separately because they are not serialized with the definition.
-            var hasDefinitionChanged = STJson.ToJson(existingDefinition) != STJson.ToJson(providerDefinition) ||
-                                       STJson.ToJson(existingDefinition.Settings) != STJson.ToJson(providerDefinition.Settings);
+            var hasDefinitionChanged = !existingDefinition.Equals(providerDefinition) || !existingDefinition.Settings.Equals(providerDefinition.Settings);
 
             // Only test existing definitions if it is enabled and forceSave isn't set and the definition has changed.
             if (providerDefinition.Enable && !forceSave && hasDefinitionChanged)
@@ -165,6 +165,7 @@ namespace Radarr.Api.V3
         public object DeleteProvider(int id)
         {
             _providerFactory.Delete(id);
+
             return new { };
         }
 
@@ -178,6 +179,7 @@ namespace Radarr.Api.V3
         }
 
         [HttpGet("schema")]
+        [Produces("application/json")]
         public List<TProviderResource> GetTemplates()
         {
             var defaultDefinitions = _providerFactory.GetDefaultDefinitions().OrderBy(p => p.ImplementationName).ToList();
@@ -201,10 +203,11 @@ namespace Radarr.Api.V3
 
         [SkipValidation(true, false)]
         [HttpPost("test")]
-        public object Test([FromBody] TProviderResource providerResource)
+        [Consumes("application/json")]
+        public object Test([FromBody] TProviderResource providerResource, [FromQuery] bool forceTest = false)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
-            var providerDefinition = GetDefinition(providerResource, existingDefinition, true, true, true);
+            var providerDefinition = GetDefinition(providerResource, existingDefinition, true, !forceTest, true);
 
             Test(providerDefinition, true);
 
@@ -222,12 +225,15 @@ namespace Radarr.Api.V3
 
             foreach (var definition in providerDefinitions)
             {
-                var validationResult = _providerFactory.Test(definition);
+                var validationFailures = new List<ValidationFailure>();
+
+                validationFailures.AddRange(definition.Settings.Validate().Errors);
+                validationFailures.AddRange(_providerFactory.Test(definition).Errors);
 
                 result.Add(new ProviderTestAllResult
                 {
                     Id = definition.Id,
-                    ValidationFailures = validationResult.Errors.ToList()
+                    ValidationFailures = validationFailures
                 });
             }
 
@@ -238,7 +244,7 @@ namespace Radarr.Api.V3
         [HttpPost("action/{name}")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public IActionResult RequestAction(string name, [FromBody] TProviderResource providerResource)
+        public IActionResult RequestAction([FromRoute] string name, [FromBody] TProviderResource providerResource)
         {
             var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
             var providerDefinition = GetDefinition(providerResource, existingDefinition, false, false, false);

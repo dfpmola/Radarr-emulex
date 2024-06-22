@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Equ;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
@@ -42,9 +43,11 @@ namespace NzbDrone.Core.Indexers.Torznab
         }
     }
 
-    public class TorznabSettings : NewznabSettings, ITorrentIndexerSettings
+    public class TorznabSettings : NewznabSettings, ITorrentIndexerSettings, IEquatable<TorznabSettings>
     {
         private static readonly TorznabSettingsValidator Validator = new ();
+
+        private static readonly MemberwiseEqualityComparer<TorznabSettings> Comparer = MemberwiseEqualityComparer<TorznabSettings>.ByProperties;
 
         public TorznabSettings()
         {
@@ -58,15 +61,30 @@ namespace NzbDrone.Core.Indexers.Torznab
         [FieldDefinition(9)]
         public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
 
-        [FieldDefinition(10, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
-        public IEnumerable<int> RequiredFlags { get; set; }
-
-        [FieldDefinition(11, Type = FieldType.Checkbox, Label = "IndexerSettingsRejectBlocklistedTorrentHashes", HelpText = "IndexerSettingsRejectBlocklistedTorrentHashesHelpText", Advanced = true)]
+        [FieldDefinition(10, Type = FieldType.Checkbox, Label = "IndexerSettingsRejectBlocklistedTorrentHashes", HelpText = "IndexerSettingsRejectBlocklistedTorrentHashesHelpText", Advanced = true)]
         public bool RejectBlocklistedTorrentHashesWhileGrabbing { get; set; }
+
+        [FieldDefinition(11, Type = FieldType.Select, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
+        public IEnumerable<int> RequiredFlags { get; set; }
 
         public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
+        }
+
+        public bool Equals(TorznabSettings other)
+        {
+            return Comparer.Equals(this, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as TorznabSettings);
+        }
+
+        public override int GetHashCode()
+        {
+            return Comparer.GetHashCode(this);
         }
     }
 }

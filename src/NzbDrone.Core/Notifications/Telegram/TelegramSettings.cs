@@ -1,6 +1,5 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Telegram
@@ -16,9 +15,9 @@ namespace NzbDrone.Core.Notifications.Telegram
         }
     }
 
-    public class TelegramSettings : IProviderConfig
+    public class TelegramSettings : NotificationSettingsBase<TelegramSettings>
     {
-        private static readonly TelegramSettingsValidator Validator = new TelegramSettingsValidator();
+        private static readonly TelegramSettingsValidator Validator = new ();
 
         [FieldDefinition(0, Label = "NotificationsTelegramSettingsBotToken", Privacy = PrivacyLevel.ApiKey, HelpLink = "https://core.telegram.org/bots")]
         public string BotToken { get; set; }
@@ -32,7 +31,10 @@ namespace NzbDrone.Core.Notifications.Telegram
         [FieldDefinition(3, Label = "NotificationsTelegramSettingsSendSilently", Type = FieldType.Checkbox, HelpText = "NotificationsTelegramSettingsSendSilentlyHelpText")]
         public bool SendSilently { get; set; }
 
-        public NzbDroneValidationResult Validate()
+        [FieldDefinition(4, Label = "NotificationsTelegramSettingsIncludeAppName", Type = FieldType.Checkbox, HelpText = "NotificationsTelegramSettingsIncludeAppNameHelpText")]
+        public bool IncludeAppNameInTitle { get; set; }
+
+        public override NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
