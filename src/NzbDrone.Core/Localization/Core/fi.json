@@ -481,7 +481,7 @@
     "DeleteNotificationMessageText": "Haluatko varmasti poistaa ilmoituspalvelun \"{name}\"?",
     "DeleteRestriction": "Poista rajoitus",
     "DeleteRestrictionHelpText": "Haluatko varmasti poistaa rajoituksen?",
-    "DeleteSelectedMovie": "Poista valitut elokuvat",
+    "DeleteSelectedMovie": "Poista valittu elokuva",
     "DeleteTagMessageText": "Haluatko varmasti poistaa tunnisteen \"{label}\"?",
     "DeleteMovieFolderConfirmation": "Elokuvakansio \"{path}\" ja kaikki sen sisältö poistetaan.",
     "DestinationRelativePath": "Kohde suhteessa polkuun",
@@ -1156,7 +1156,7 @@
     "AddImportListImplementation": "Lisätään tuontilistaa - {implementationName}",
     "AllTitles": "Kaikki nimikkeet",
     "EditDownloadClientImplementation": "Muokataan lataustyökalua - {implementationName}",
-    "IndexerDownloadClientHealthCheckMessage": "Tietolähteet virheellisillä lataustyökaluilla: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Tietolähteet virheellisillä lataustyökaluilla: {indexerNames}.",
     "RemoveQueueItem": "Poistetaan - {sourceTitle}",
     "TablePageSizeMaximum": "Sivukohtainen kohdemäärä ei voi olla suurempi kuin {maximumValue}.",
     "TablePageSizeMinimum": "Sivukohtaisen kohdemäärän on oltava vähintään {minimumValue}.",
@@ -1741,5 +1741,10 @@
     "SearchForAllMissingMoviesConfirmationCount": "Haluatko varmasti etsiä '{0}' puuttuvaa albumia?",
     "DownloadClientValidationGroupMissingDetail": "Syötettyä kategoriaa ei ole lautaustyökalussa {clientName}. Luo se sinne ensin.",
     "SearchForCutoffUnmetMovies": "Etsi kaikkia kirjoja, joiden katkaisutasoa ei ole savutettu",
-    "SearchForCutoffUnmetMoviesConfirmationCount": "Haluatko varmasti etsiä kaikkia {totalRecords} katkaisutasoa saavuttamattomia jaksoja?"
+    "SearchForCutoffUnmetMoviesConfirmationCount": "Haluatko varmasti etsiä kaikkia {totalRecords} katkaisutasoa saavuttamattomia jaksoja?",
+    "DeleteMovieFolderCountConfirmation": "Haluatko varmasti poistaa {count} valitun elokuvan/valittua elokuvaa?",
+    "DeleteMovieFolderCountWithFilesConfirmation": "Haluatko varmasti poistaa {count} valitun elokuvan/valittua elokuvaa sisältöineen?",
+    "DeleteMovieFolders": "Poista elokuvakansiot",
+    "DeleteMovieFoldersHelpText": "Poista elokuvakansiot sisältöineen",
+    "DeleteSelectedMovies": "Poista valitut elokuvat"
 }

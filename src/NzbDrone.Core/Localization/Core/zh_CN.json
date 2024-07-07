@@ -1230,7 +1230,7 @@
     "InteractiveImportNoMovie": "必须为每个选定的文件选择影片",
     "MovieFileDeletedTooltip": "删除电影文件",
     "MovieGrabbedHistoryTooltip": "从{indexer}获取电影并发送到{downloadClient}",
-    "IndexerDownloadClientHealthCheckMessage": "有无效下载客户端的索引器：{0}。",
+    "IndexerDownloadClientHealthCheckMessage": "有无效下载客户端的索引器：{indexerNames}。",
     "FullColorEvents": "全彩事件",
     "InteractiveImportNoFilesFound": "在所选文件夹中找不到视频文件",
     "InteractiveImportNoImportMode": "必须选择导入模式",
@@ -1660,5 +1660,10 @@
     "NotificationsPushoverSettingsDevicesHelpText": "设备 ID 列表，留空发给所有设备",
     "NotificationsPlexValidationNoMovieLibraryFound": "需要至少一个电视资源库",
     "SearchForCutoffUnmetMovies": "搜索所有Cutoff Unmet书籍",
-    "SearchForCutoffUnmetMoviesConfirmationCount": "您确定要搜索所有{totalRecords}Cutoff Unmet的剧集吗？"
+    "SearchForCutoffUnmetMoviesConfirmationCount": "您确定要搜索所有{totalRecords}Cutoff Unmet的剧集吗？",
+    "DeleteMovieFolderCountConfirmation": "你确定要删除选中的 {count} 个剧集吗？",
+    "DeleteMovieFolderCountWithFilesConfirmation": "你确定要删除选中的 {count} 个剧集及其所含的所有文件吗？",
+    "DeleteMovieFolders": "删除电影目录",
+    "DeleteMovieFoldersHelpText": "删除剧集文件夹及其所含文件",
+    "DeleteSelectedMovies": "删除选中的剧集"
 }

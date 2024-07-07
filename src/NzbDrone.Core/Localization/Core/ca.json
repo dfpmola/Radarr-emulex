@@ -1221,7 +1221,7 @@
     "EditSelectedDownloadClients": "Editeu els clients de descàrrega seleccionats",
     "ManageLists": "Gestiona les llistes",
     "Loading": "Carregant",
-    "IndexerDownloadClientHealthCheckMessage": "Indexadors amb clients de baixada no vàlids: {0}.",
+    "IndexerDownloadClientHealthCheckMessage": "Indexadors amb clients de baixada no vàlids: {indexerNames}.",
     "ImportScriptPath": "Importa la ruta de l'script",
     "ListRefreshInterval": "Interval d'actualització de la llista",
     "ManualGrab": "Captura manual",
@@ -1372,5 +1372,9 @@
     "MovieIsNotMonitored": "La pel·lícula està monitorada",
     "DownloadClientDownloadStationValidationFolderMissing": "El fitxer no existeix",
     "IndexerSettingsMultiLanguageRelease": "Multi-idioma",
-    "ReleaseGroups": "Grup de llançament"
+    "ReleaseGroups": "Grup de llançament",
+    "DeleteMovieFolderCountConfirmation": "Esteu segur que voleu suprimir {count} sèries seleccionades?",
+    "DeleteMovieFolders": "Suprimeix la carpeta de pel·lícules",
+    "DeleteMovieFoldersHelpText": "Suprimeix la carpeta de pel·lícules i el seu contingut",
+    "DeleteSelectedMovies": "Suprimeix les sèries seleccionades"
 }
