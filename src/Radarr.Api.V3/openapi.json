@@ -9031,7 +9031,8 @@
         "enum": [
           "unknown",
           "usenet",
-          "torrent"
+          "torrent",
+          "ed2k"
         ],
         "type": "string"
       },
